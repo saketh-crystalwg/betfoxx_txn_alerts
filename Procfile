@@ -1,0 +1,1 @@
+worker: python betfoxx_txn_alerts.py

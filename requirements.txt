@@ -1,0 +1,6 @@
+pandas
+babel
+mysql-connector-python==8.0.33
+openpyxl
+sqlalchemy
+psycopg2
