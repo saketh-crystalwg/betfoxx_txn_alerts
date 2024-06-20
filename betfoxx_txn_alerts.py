@@ -114,9 +114,12 @@ if txns is not None and txns.shape[0] > 0:
             failed_response_data = failed_response.json()
 
             failed_entities = failed_response_data['ResponseObject'][0]['Comment']
+            
+            current_row = pd.DataFrame({'Id': [failed_txns['Id'][i]], 'Comments': [failed_entities]})
+            
+            failed_comments = pd.concat([failed_comments, current_row], ignore_index=True)
         
-            failed_comments = failed_comments.append({'Id': failed_txns['Id'][i], 'Comments': failed_entities}, ignore_index=True)
-    
+
         result = pd.merge(filtered_txns, failed_comments, how='left', on='Id')
 
     filename = f'Betfoxx_Transaction_Alerts_{end_datetime_1}.xlsx'
