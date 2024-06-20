@@ -87,19 +87,44 @@ if txns is not None and txns.shape[0] > 0:
                       else 'Waiting For KYC' if x == 5 \
                       else 'NA' for x in txns['State']]
 
-    filtered_txns = txns[(txns['Status'] != 'Approved') & (txns['Status'] != 'ApprovedManually')][['UserName', 'FirstName', 'LastName', 'Email', 'CreationTime', 'PaymentSystemId', 'Status', 'CurrencyId', 'Amount']]
+    filtered_txns = txns[(txns['Status'] != 'Approved') & (txns['Status'] != 'ApprovedManually')][['UserName', 'FirstName', 'LastName', 'Email', 'CreationTime', 'PaymentSystemId', 'Status', 'CurrencyId', 'Amount','ConvertedAmount','Id']]
     filtered_txns['Payment_Method'] = ['InternationalPSP' if x == 326 \
                                        else 'NOWPay' if x == 147 \
                                        else 'XcoinsPayCard' if x == 324 \
                                        else 'XcoinsPayCrypto' if x == 323 \
                                        else 'Others' for x in filtered_txns['PaymentSystemId']]
 
+    failed_txns = filtered_txns[filtered_txns['Status'] !=  'Pending'].reset_index()
+    
+    failed_comments = pd.DataFrame(columns=['Id', 'Comments'])
+    
+    if failed_txns is not None and failed_txns.shape[0] > 0:
+    
+        for i in range (0,failed_txns.shape[0]):
+            failed_data = {"Controller":"PaymentSystem",
+            "Method":"GetPaymentRequestHistories",
+            "RequestObject":{
+                "Controller":"PaymentSystem",
+                "Method":"GetPaymentRequestHistories",
+                "PaymentRequestId":str(failed_txns['Id'][i])},
+            "UserId":"1780","ApiKey":"betfoxx_api_key"}
+        
+            failed_response = requests.post(txn_url, json=failed_data)
+
+            failed_response_data = failed_response.json()
+
+            failed_entities = failed_response_data['ResponseObject'][0]['Comment']
+        
+            failed_comments = failed_comments.append({'Id': failed_txns['Id'][i], 'Comments': failed_entities}, ignore_index=True)
+    
+        result = pd.merge(filtered_txns, failed_comments, how='left', on='Id')
+
     filename = f'Betfoxx_Transaction_Alerts_{end_datetime_1}.xlsx'
 
     sub = f'Betfoxx_Transaction_Details_{end_datetime_1}'
 
     with pd.ExcelWriter(filename, engine='openpyxl') as writer:
-        filtered_txns.reset_index(drop=True).to_excel(writer, sheet_name="Unsuccessful_Txns", index=False)
+        result.reset_index(drop=True).to_excel(writer, sheet_name="Unsuccessful_Txns", index=False)
 
     with pd.ExcelWriter(filename, engine='openpyxl', mode='a') as writer:
         workbook = writer.book
