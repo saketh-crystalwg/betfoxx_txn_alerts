@@ -34,7 +34,7 @@ def send_mail(send_from, send_to, subject, text, server, port, username='', pass
     smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.quit()
 
-start_time = datetime.utcnow() - timedelta(hours=10)
+start_time = datetime.utcnow() - timedelta(hours=1)
 
 end_time = datetime.utcnow()
 
