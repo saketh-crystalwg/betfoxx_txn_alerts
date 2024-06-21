@@ -154,6 +154,3 @@ if txns is not None and txns.shape[0] > 0:
     password = "xjyb jsdl buri ylqr"
 
     send_mail(sender, recipients, subject, body, "smtp.gmail.com", 465, sender, password, filename)
-
-else:
-    sys.exit()
