@@ -34,14 +34,14 @@ def send_mail(send_from, send_to, subject, text, server, port, username='', pass
     smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.quit()
 
-start_time = datetime.utcnow() - timedelta(hours=1)
+start_time = datetime.utcnow() - timedelta(minutes=1)
 
 end_time = datetime.utcnow()
 
 # Extract only the date and hour from the current system datetime
-start_datetime = start_time.strftime('%Y-%m-%dT%H:00:00.000Z')
+start_datetime = start_time.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
-end_datetime = end_time.strftime('%Y-%m-%dT%H:00:00.000Z')
+end_datetime = end_time.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
 txn_url = 'https://adminwebapi.iqsoftllc.com/api/Main/ApiRequest?TimeZone=0&LanguageId=en'
 
@@ -67,7 +67,7 @@ txn_entities = txn_response_data['ResponseObject']['PaymentRequests']['Entities'
 
 txns = pd.DataFrame(txn_entities)
 
-end_datetime_1 = end_time.strftime('%Y-%m-%d_T%H:00')
+end_datetime_1 = end_time.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
 if txns is not None and txns.shape[0] > 0:
     txns['Status'] = ['Approved' if x == 8 \
@@ -155,11 +155,4 @@ if txns is not None and txns.shape[0] > 0:
     send_mail(sender, recipients, subject, body, "smtp.gmail.com", 465, sender, password, filename)
 
 else:
-    # Send an email indicating there are no transactions
-    subject = f'Betfoxx_Transaction_Details_{end_datetime_1}'
-    body = "Hi,\n\nNo unsuccessful transactions were found during the specified period.\n\nThanks,\nSaketh"
-    sender = "sakethg250@gmail.com"
-    recipients = ["saketh@crystalwg.com","SANDRA@CRYSTALWG.COM","ron@crystalwg.com","camila@crystalwg.com","celeste@crystalwg.com","cristina@crystalwg.com","lina@crystalwg.com","erika@crystalwg.com"]
-    password = "xjyb jsdl buri ylqr"
-
-    send_mail(sender, recipients, subject, body, "smtp.gmail.com", 465, sender, password)
+    break
