@@ -12,6 +12,7 @@ from email import encoders
 import datetime as dt
 from datetime import datetime, timedelta
 from openpyxl.styles import Alignment
+import sys
 
 
 def send_mail(send_from, send_to, subject, text, server, port, username='', password='', filename=None):
@@ -122,7 +123,7 @@ if txns is not None and txns.shape[0] > 0:
 
         result = pd.merge(filtered_txns, failed_comments, how='left', on='Id')
 
-    filename = f'Betfoxx_Transaction_Alerts_{end_datetime_1}.xlsx'
+    filename = f'Betfoxx_Transaction_Alerts.xlsx'
 
     sub = f'Betfoxx_Transaction_Details_{end_datetime_1}'
 
@@ -155,4 +156,4 @@ if txns is not None and txns.shape[0] > 0:
     send_mail(sender, recipients, subject, body, "smtp.gmail.com", 465, sender, password, filename)
 
 else:
-    break
+    sys.exit()
