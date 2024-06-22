@@ -154,3 +154,11 @@ if txns is not None and txns.shape[0] > 0:
     password = "xjyb jsdl buri ylqr"
 
     send_mail(sender, recipients, subject, body, "smtp.gmail.com", 465, sender, password, filename)
+else:
+    subject = f'Betfoxx_Transaction_Details_{end_datetime_1}'
+    body = "Hi,\n\nNo failed transactions during the specified period.\n\nThanks,\nSaketh"
+    sender = "sakethg250@gmail.com"
+    recipients = ["saketh@crystalwg.com","sebastian@crystalwg.com","SANDRA@CRYSTALWG.COM","ron@crystalwg.com","camila@crystalwg.com","celeste@crystalwg.com","cristina@crystalwg.com","lina.betcoco@gmail.com","erika@crystalwg.com"]
+    password = "xjyb jsdl buri ylqr"
+
+    send_mail(sender, recipients, subject, body, "smtp.gmail.com", 465, sender, password)
