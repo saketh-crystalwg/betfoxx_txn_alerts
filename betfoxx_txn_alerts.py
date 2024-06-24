@@ -35,7 +35,7 @@ def send_mail(send_from, send_to, subject, text, server, port, username='', pass
     smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.quit()
 
-start_time = datetime.utcnow() - timedelta(minutes=10)
+start_time = datetime.utcnow() - timedelta(hours=10)
 
 end_time = datetime.utcnow()
 
@@ -121,7 +121,7 @@ if txns is not None and txns.shape[0] > 0:
             failed_comments = pd.concat([failed_comments, current_row], ignore_index=True)
         
 
-        result = pd.merge(filtered_txns, failed_comments, how='left', on='Id')
+    result = pd.merge(filtered_txns, failed_comments, how='left', on='Id')
     result_1 =  result[~result['Comments'].str.contains('StatusCode', na=False)]
     result_2 = result[result['Comments'].str.contains('StatusCode', na=False)]
     
