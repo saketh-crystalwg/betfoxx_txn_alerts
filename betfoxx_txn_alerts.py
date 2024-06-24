@@ -175,7 +175,7 @@ if txns is not None and txns.shape[0] > 0:
     subject = sub
     body = f"Hi,\n\n Attached contains the details of unsuccessfull transactions  during the  hour of  {end_datetime_1} for Betfoxx \n\nThanks,\nSaketh"
     sender = "sakethg250@gmail.com"
-    recipients = ["saketh@crystalwg.com",]
+    recipients = ["saketh@crystalwg.com","sebastian@crystalwg.com","SANDRA@CRYSTALWG.COM","ron@crystalwg.com","camila@crystalwg.com","celeste@crystalwg.com","cristina@crystalwg.com","lina@crystalwg.com","erika@crystalwg.com","isaac@crystalwg.com"]
     password = "xjyb jsdl buri ylqr"
 
     send_mail(sender, recipients, subject, body, "smtp.gmail.com", 465, sender, password, filename)
