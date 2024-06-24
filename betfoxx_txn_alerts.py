@@ -35,7 +35,7 @@ def send_mail(send_from, send_to, subject, text, server, port, username='', pass
     smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.quit()
 
-start_time = datetime.utcnow() - timedelta(hours=10)
+start_time = datetime.utcnow() - timedelta(minutes=10)
 
 end_time = datetime.utcnow()
 
@@ -175,7 +175,7 @@ if txns is not None and txns.shape[0] > 0:
     subject = sub
     body = f"Hi,\n\n Attached contains the details of unsuccessfull transactions  during the  hour of  {end_datetime_1} for Betfoxx \n\nThanks,\nSaketh"
     sender = "sakethg250@gmail.com"
-    recipients = ["saketh@crystalwg.com","sebastian@crystalwg.com","SANDRA@CRYSTALWG.COM","ron@crystalwg.com","camila@crystalwg.com","celeste@crystalwg.com","cristina@crystalwg.com","lina@crystalwg.com","erika@crystalwg.com","isaac@crystalwg.com"]
+    recipients = ["saketh@crystalwg.com","sebastian@crystalwg.com","SANDRA@CRYSTALWG.COM","ron@crystalwg.com","camila@crystalwg.com","celeste@crystalwg.com","cristina@crystalwg.com","lina@crystalwg.com","erika@crystalwg.com","isaac@crystalwg.com","sakethg250@gmail.com"]
     password = "xjyb jsdl buri ylqr"
 
     send_mail(sender, recipients, subject, body, "smtp.gmail.com", 465, sender, password, filename)
@@ -183,7 +183,7 @@ else:
     subject = f'Betfoxx_Transaction_Details_{end_datetime_1}'
     body = "Hi,\n\nNo failed transactions during the specified period.\n\nThanks,\nSaketh"
     sender = "sakethg250@gmail.com"
-    recipients = ["saketh@crystalwg.com"]
+    recipients = ["saketh@crystalwg.com","sakethg250@gmail.com"]
     password = "xjyb jsdl buri ylqr"
 
     send_mail(sender, recipients, subject, body, "smtp.gmail.com", 465, sender, password)
