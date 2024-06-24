@@ -122,13 +122,38 @@ if txns is not None and txns.shape[0] > 0:
         
 
         result = pd.merge(filtered_txns, failed_comments, how='left', on='Id')
+    result_1 =  result[~result['Comments'].str.contains('StatusCode', na=False)]
+    result_2 = result[result['Comments'].str.contains('StatusCode', na=False)]
+    
+    def extract_message(comment):
+        if not comment:
+            return 'No JSON found'
+        try:
+        # Find the position of 'message' field
+            message_start = comment.find('"message\\":\\"') + len('"message\\":\\"')
+            if message_start == -1:
+                return 'No message found'
+            message_end = comment.find('\\"', message_start)
+            if message_end == -1:
+                return 'No message found'
+        # Extract the message substring
+            message = comment[message_start:message_end]
+            return message
+        except Exception as e:
+            return str(e)
+        return 'No JSON found'
+
+# Apply the function to the DataFrame
+    result_2['Comments'] = result_2['Comments'].apply(extract_message)
+    
+    result_3 = pd.concat([result_1, result_2], ignore_index=True)
 
     filename = f'Betfoxx_Transaction_Alerts.xlsx'
 
     sub = f'Betfoxx_Transaction_Details_{end_datetime_1}'
 
     with pd.ExcelWriter(filename, engine='openpyxl') as writer:
-        result.reset_index(drop=True).to_excel(writer, sheet_name="Unsuccessful_Txns", index=False)
+        result_3.reset_index(drop=True).to_excel(writer, sheet_name="Unsuccessful_Txns", index=False)
 
     with pd.ExcelWriter(filename, engine='openpyxl', mode='a') as writer:
         workbook = writer.book
@@ -150,7 +175,7 @@ if txns is not None and txns.shape[0] > 0:
     subject = sub
     body = f"Hi,\n\n Attached contains the details of unsuccessfull transactions  during the  hour of  {end_datetime_1} for Betfoxx \n\nThanks,\nSaketh"
     sender = "sakethg250@gmail.com"
-    recipients = ["saketh@crystalwg.com","sebastian@crystalwg.com","SANDRA@CRYSTALWG.COM","ron@crystalwg.com","camila@crystalwg.com","celeste@crystalwg.com","cristina@crystalwg.com","lina@crystalwg.com","erika@crystalwg.com","isaac@crystalwg.com"]
+    recipients = ["saketh@crystalwg.com",]
     password = "xjyb jsdl buri ylqr"
 
     send_mail(sender, recipients, subject, body, "smtp.gmail.com", 465, sender, password, filename)
