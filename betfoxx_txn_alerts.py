@@ -93,6 +93,17 @@ if txns is not None and txns.shape[0] > 0:
                                        else 'NOWPay' if x == 147 \
                                        else 'XcoinsPayCard' if x == 324 \
                                        else 'XcoinsPayCrypto' if x == 323 \
+                                       else 'Omer' if x == 345 \
+                                       else 'PayOpPIX' if x == 160 \
+                                       else 'PayOpNeosurf' if x == 159 \
+                                       else 'PayOpNeosurfUK' if x == 347 \
+                                       else 'PayOpBankAT' if x == 352 \
+                                       else 'PayOpRevolut' if x == 161 \
+                                       else 'PayOPInterac' if x == 348 \
+                                       else 'PayOpCashToCode' if x == 350 \
+                                       else 'PayOpRevolutUK' if x == 356 \
+                                       else 'PayOpBankUK' if x == 353 \
+                                       else 'PayOpMonzo' if x == 349 \
                                        else 'Others' for x in filtered_txns['PaymentSystemId']]
 
     failed_txns = filtered_txns[filtered_txns['Status'] !=  'Pending'].reset_index()
