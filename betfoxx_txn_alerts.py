@@ -10,7 +10,7 @@ from email.mime.text import MIMEText
 from email.utils import formatdate
 from email import encoders
 import datetime as dt
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from openpyxl.styles import Alignment
 import sys
 
@@ -35,9 +35,9 @@ def send_mail(send_from, send_to, subject, text, server, port, username='', pass
     smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.quit()
 
-start_time = datetime.utcnow() - timedelta(minutes=10)
+start_time = datetime.now(timezone.utc) - timedelta(minutes=10)
 
-end_time = datetime.utcnow()
+end_time = datetime.now(timezone.utc)
 
 # Extract only the date and hour from the current system datetime
 start_datetime = start_time.strftime('%Y-%m-%dT%H:%M:%S.000Z')
