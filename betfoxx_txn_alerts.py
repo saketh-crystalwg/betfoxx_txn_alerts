@@ -69,9 +69,15 @@ print(txn_response)
 
 txn_response_data = txn_response.json()
 
+print(txn_response_data)
+
 txn_entities = txn_response_data['ResponseObject']['PaymentRequests']['Entities']
 
+print(txn_entities)
+
 txns = pd.DataFrame(txn_entities)
+
+print(txns)
 
 end_datetime_1 = end_time.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
