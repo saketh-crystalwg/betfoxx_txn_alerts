@@ -1,19 +1,3 @@
-import json
-import pandas as pd
-import  requests
-from requests.auth import HTTPBasicAuth
-from sqlalchemy import create_engine
-import smtplib,ssl
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email.mime.text import MIMEText
-from email.utils import formatdate
-from email import encoders
-import datetime as dt
-from datetime import datetime, timedelta, timezone
-from openpyxl.styles import Alignment
-import sys
-
 
 def send_mail(send_from, send_to, subject, text, server, port, username='', password='', filename=None):
     msg = MIMEMultipart()
@@ -43,6 +27,10 @@ end_time = datetime.now(timezone.utc)
 start_datetime = start_time.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
 end_datetime = end_time.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+print(start_datetime)
+
+print(end_datetime)
 
 txn_url = 'https://adminwebapi.iqsoftllc.com/api/Main/ApiRequest?TimeZone=0&LanguageId=en'
 
