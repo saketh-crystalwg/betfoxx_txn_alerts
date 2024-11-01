@@ -1,17 +1,3 @@
-import json
-import pandas as pd
-import  requests
-from requests.auth import HTTPBasicAuth
-from sqlalchemy import create_engine
-import smtplib,ssl
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email.mime.text import MIMEText
-from email.utils import formatdate
-from email import encoders
-from datetime import datetime, timedelta, timezone
-from openpyxl.styles import Alignment
-import sys
 
 def send_mail(send_from, send_to, subject, text, server, port, username='', password='', filename=None):
     msg = MIMEMultipart()
@@ -63,6 +49,8 @@ txn_data = {"Controller":"PaymentSystem",
             "UserId":"1780","ApiKey":"betfoxx_api_key"}
 
 txn_response = requests.post(txn_url, json=txn_data)
+
+print(txn_response)
 
 txn_response_data = txn_response.json()
 
