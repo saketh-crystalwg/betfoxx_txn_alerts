@@ -12,6 +12,7 @@ from email import encoders
 from datetime import datetime, timedelta, timezone
 from openpyxl.styles import Alignment
 import sys
+import numpy as np
 
 
 def send_mail(send_from, send_to, subject, text, server, port, username='', password='', filename=None):
