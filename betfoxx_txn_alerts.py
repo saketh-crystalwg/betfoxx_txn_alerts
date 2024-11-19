@@ -43,9 +43,6 @@ start_datetime = start_time.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
 end_datetime = end_time.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
-print(start_datetime)
-
-print(end_datetime)
 
 txn_url = 'https://adminwebapi.iqsoftllc.com/api/Main/ApiRequest?TimeZone=0&LanguageId=en'
 
@@ -65,19 +62,15 @@ txn_data = {"Controller":"PaymentSystem",
 
 txn_response = requests.post(txn_url, json=txn_data)
 
-print(txn_response)
 
 txn_response_data = txn_response.json()
 
-print(txn_response_data)
 
 txn_entities = txn_response_data['ResponseObject']['PaymentRequests']['Entities']
 
-print(txn_entities)
 
 txns = pd.DataFrame(txn_entities)
 
-print(txns)
 
 end_datetime_1 = end_time.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
@@ -98,8 +91,10 @@ if txns is not None and txns.shape[0] > 0:
                       else 'Splitted' if x == 15 \
                       else 'Waiting For KYC' if x == 5 \
                       else 'NA' for x in txns['State']]
+    txns['partner_name'] = np.where(txns['PartnerId'] == 20, 'BetFoxx', 
+                       np.where(txns['PartnerId'] == 137, 'slotsamigo', 'Others'))
 
-    filtered_txns = txns[(txns['Status'] != 'Approved') & (txns['Status'] != 'ApprovedManually')][['UserName', 'FirstName', 'LastName', 'Email', 'CreationTime', 'PaymentSystemId', 'Status', 'CurrencyId', 'Amount','ConvertedAmount','Id']]
+    filtered_txns = txns[(txns['Status'] != 'Approved') & (txns['Status'] != 'ApprovedManually')][['UserName', 'FirstName', 'LastName', 'Email', 'CreationTime', 'PaymentSystemId', 'Status', 'CurrencyId', 'Amount','ConvertedAmount','Id','partner_name']]
     filtered_txns['Payment_Method'] = ['InternationalPSP' if x == 326 \
                                        else 'NOWPay' if x == 147 \
                                        else 'XcoinsPayCard' if x == 324 \
@@ -169,7 +164,7 @@ if txns is not None and txns.shape[0] > 0:
     result_2['Comments'] = result_2['Comments'].apply(extract_message)
     
     result_3 = pd.concat([result_1, result_2], ignore_index=True)
-
+    
     filename = f'Betfoxx_Transaction_Alerts.xlsx'
 
     sub = f'Betfoxx_Transaction_Details_{end_datetime_1}'
